@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Sign in · Expense Tracker{% endblock %}
+{% block auth_content %}
+<div class="auth-card">
+    <div class="brand auth-brand"><span class="brand-mark">₿</span><span>Expense<span>Tracker</span></span></div>
+    <h1>Welcome back</h1>
+    <p class="muted">Sign in to access your private financial dashboard.</p>
+    <form method="post" class="form-stack">
+        {% csrf_token %}
+        {% if form.non_field_errors %}<div class="error-box">{{ form.non_field_errors }}</div>{% endif %}
+        <label>Username {{ form.username }}</label>
+        <label>Password {{ form.password }}</label>
+        <button class="primary-btn" type="submit">Sign in</button>
+    </form>
+    <p class="auth-footer"><a href="{% url 'password_reset' %}">Forgot your password?</a></p>
+    <p class="auth-footer">Don't have an account? <a href="{% url 'signup' %}">Create one</a></p>
+</div>
+{% endblock %}

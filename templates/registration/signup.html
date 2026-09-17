@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Create account · Expense Tracker{% endblock %}
+{% block auth_content %}
+<div class="auth-card wide">
+    <div class="brand auth-brand"><span class="brand-mark">₿</span><span>Expense<span>Tracker</span></span></div>
+    <h1>Create your account</h1>
+    <p class="muted">Your financial data is separated by account.</p>
+    <form method="post" class="form-stack">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {% for field in form %}
+            <label>{{ field.label }} {{ field }}
+                {% if field.help_text %}<small class="help">{{ field.help_text }}</small>{% endif %}
+                {% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+            </label>
+        {% endfor %}
+        <button class="primary-btn" type="submit">Create account</button>
+    </form>
+    <p class="auth-footer">Already registered? <a href="{% url 'login' %}">Sign in</a></p>
+</div>
+{% endblock %}

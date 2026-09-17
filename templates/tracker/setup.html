@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Initial setup · Expense Tracker{% endblock %}
+{% block auth_content %}
+<div class="auth-card">
+    <div class="brand auth-brand"><span class="brand-mark">₿</span><span>Expense<span>Tracker</span></span></div>
+    <h1>Set your starting balances</h1>
+    <p class="muted">This creates your initial financial snapshot. You can then start recording transactions.</p>
+    <form method="post" class="form-stack">
+        {% csrf_token %}
+        <label>Digital balance {{ form.digital_balance }}</label>
+        <label>Cash balance {{ form.cash_balance }}</label>
+        <button class="primary-btn" type="submit">Start tracking</button>
+    </form>
+</div>
+{% endblock %}

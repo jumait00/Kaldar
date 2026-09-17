@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load tracker_tags %}
+{% block title %}Loan & Lending · Expense Tracker{% endblock %}
+{% block heading %}Loan & Lending{% endblock %}
+{% block content %}
+<div class="loan-actions">
+{% for key, label in action_labels.items %}
+<a class="loan-option {% if action == key %}selected{% endif %}" href="{% url 'loan_lend' %}?action={{ key }}">
+    <strong>{{ label }}</strong>
+    <small>
+    {% if key == "repay_loan" %}Pay back money you borrowed
+    {% elif key == "give_loan" %}Give money to someone as a loan
+    {% elif key == "receive_loan" %}Receive money someone borrowed from you
+    {% else %}Borrow money from someone{% endif %}
+    </small>
+</a>
+{% endfor %}
+</div>
+<div class="form-page">
+<div class="panel form-panel">
+<div class="panel-header"><div><h2>{{ action_labels|get_item:action }}</h2><p>Record this transaction and update your balances.</p></div></div>
+<form method="post" class="form-grid">
+{% csrf_token %}
+<input type="hidden" name="loan_action" value="{{ action }}">
+{% for field in form %}
+<div class="field {% if field.name == 'note' %}full{% endif %}"><label>{{ field.label }}</label>{{ field }}{% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</div>
+{% endfor %}
+<div class="full form-actions"><a href="{% url 'dashboard' %}" class="secondary-btn">Cancel</a><button class="primary-btn">Save transaction</button></div>
+</form>
+</div>
+</div>
+{% endblock %}

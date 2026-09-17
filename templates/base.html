@@ -1,0 +1,65 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Expense Tracker{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+</head>
+<body>
+{% if user.is_authenticated %}
+<div class="app-shell">
+    <aside class="sidebar">
+        <a class="brand" href="{% url 'dashboard' %}">
+            <span class="brand-mark">₿</span>
+            <span>Expense<span>Tracker</span></span>
+        </a>
+        <nav>
+            <a href="{% url 'dashboard' %}" class="nav-link">Dashboard</a>
+            <a href="{% url 'expense' %}" class="nav-link">Add Expense</a>
+            <a href="{% url 'income' %}" class="nav-link">Income & Transfers</a>
+            <a href="{% url 'loan_lend' %}" class="nav-link">Loan & Lending</a>
+            <a href="{% url 'transactions' %}" class="nav-link">Transactions</a>
+        </nav>
+        <div class="sidebar-bottom">
+            <div class="user-mini">
+                <div class="avatar">{{ user.username|first|upper }}</div>
+                <div><strong>{{ user.username }}</strong><small>Personal account</small></div>
+            </div>
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button class="logout-btn" type="submit">Sign out</button>
+            </form>
+        </div>
+    </aside>
+
+    <main class="main">
+        <header class="topbar">
+            <div>
+                <span class="eyebrow">PERSONAL FINANCE</span>
+                <h1>{% block heading %}Dashboard{% endblock %}</h1>
+            </div>
+            <div class="top-actions">
+                <span class="today">{{ request.user.username }}</span>
+            </div>
+        </header>
+
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+</div>
+{% else %}
+<div class="auth-shell">
+    {% block auth_content %}{% endblock %}
+</div>
+{% endif %}
+</body>
+</html>

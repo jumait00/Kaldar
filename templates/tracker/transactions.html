@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Transactions · Expense Tracker{% endblock %}
+{% block heading %}Transactions{% endblock %}
+{% block content %}
+<div class="panel">
+<div class="panel-header"><div><h2>Transaction history</h2><p>Your recorded financial activity</p></div></div>
+<form class="filter-bar" method="get">
+<input type="search" name="q" placeholder="Search category or note..." value="{{ search }}">
+<select name="type"><option value="">All types</option>{% for value,label in types %}<option value="{{ value }}" {% if selected_type == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select>
+<select name="method"><option value="">All methods</option>{% for value,label in methods %}<option value="{{ value }}" {% if selected_method == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select>
+<button class="secondary-btn">Filter</button>
+</form>
+<div class="table-wrap">
+<table>
+<thead><tr><th>DATE</th><th>TYPE</th><th>CATEGORY</th><th>METHOD</th><th>NOTE</th><th class="right">AMOUNT</th></tr></thead>
+<tbody>
+{% for tx in transactions %}
+<tr>
+<td>{{ tx.date|date:"d M Y" }}</td><td><span class="badge {{ tx.transaction_type }}">{{ tx.get_transaction_type_display }}</span></td>
+<td>{{ tx.category }}</td><td>{{ tx.get_method_display }}</td><td>{{ tx.note|default:"—" }}</td><td class="right">Rs {{ tx.amount|floatformat:2 }}</td>
+</tr>
+{% empty %}<tr><td colspan="6" class="empty">No transactions match your filters.</td></tr>{% endfor %}
+</tbody>
+</table>
+</div>
+</div>
+{% endblock %}

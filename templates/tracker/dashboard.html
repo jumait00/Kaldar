@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · Expense Tracker{% endblock %}
+{% block heading %}Dashboard{% endblock %}
+{% block content %}
+<section class="stats-grid">
+    <div class="stat-card primary-stat">
+        <div class="stat-label">TOTAL BALANCE</div>
+        <div class="stat-value">Rs {{ account.total_balance|floatformat:2 }}</div>
+        <div class="stat-sub">Cash + digital</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">DIGITAL</div>
+        <div class="stat-value">Rs {{ account.digital_balance|floatformat:2 }}</div>
+        <div class="stat-sub">Bank / wallet</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">CASH</div>
+        <div class="stat-value">Rs {{ account.cash_balance|floatformat:2 }}</div>
+        <div class="stat-sub">Physical cash</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-label">NET WORTH</div>
+        <div class="stat-value">Rs {{ account.net_worth|floatformat:2 }}</div>
+        <div class="stat-sub">Assets − debt</div>
+    </div>
+</section>
+
+<section class="quick-grid">
+    <a href="{% url 'expense' %}" class="quick-card"><span class="quick-icon">−</span><div><strong>Add Expense</strong><small>Record spending</small></div></a>
+    <a href="{% url 'income' %}" class="quick-card"><span class="quick-icon">+</span><div><strong>Deposit / Withdraw</strong><small>Move money</small></div></a>
+    <a href="{% url 'loan_lend' %}?action=give_loan" class="quick-card"><span class="quick-icon">↗</span><div><strong>Give Loan</strong><small>Lend money</small></div></a>
+    <a href="{% url 'loan_lend' %}?action=take_loan" class="quick-card"><span class="quick-icon">↙</span><div><strong>Take Loan</strong><small>Borrow money</small></div></a>
+</section>
+
+<section class="content-grid">
+    <div class="panel">
+        <div class="panel-header"><div><h2>Recent transactions</h2><p>Latest recorded activity</p></div><a href="{% url 'transactions' %}" class="text-link">View all</a></div>
+        <div class="table-wrap">
+        <table>
+            <thead><tr><th>DATE</th><th>TYPE</th><th>CATEGORY</th><th>METHOD</th><th class="right">AMOUNT</th></tr></thead>
+            <tbody>
+            {% for tx in recent %}
+            <tr>
+                <td>{{ tx.date|date:"d M Y" }}</td>
+                <td><span class="badge {{ tx.transaction_type }}">{{ tx.get_transaction_type_display }}</span></td>
+                <td>{{ tx.category }}</td>
+                <td>{{ tx.get_method_display }}</td>
+                <td class="right">Rs {{ tx.amount|floatformat:2 }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5" class="empty">No transactions yet.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
+
+    <div class="panel side-panel">
+        <div class="panel-header"><div><h2>Loans & lending</h2><p>Outstanding amounts</p></div></div>
+        <div class="debt-row"><span>Money you owe</span><strong>Rs {{ account.loan_balance|floatformat:2 }}</strong></div>
+        <div class="debt-row"><span>Money owed to you</span><strong>Rs {{ account.lend_balance|floatformat:2 }}</strong></div>
+        <div class="divider"></div>
+        <div class="debt-row"><span>Monthly expenses</span><strong>Rs {{ monthly_expenses|floatformat:2 }}</strong></div>
+        <div class="debt-row"><span>Monthly income</span><strong>Rs {{ monthly_income|floatformat:2 }}</strong></div>
+    </div>
+</section>
+
+<section class="panel">
+    <div class="panel-header"><div><h2>Top expense categories</h2><p>This month</p></div></div>
+    <div class="category-list">
+    {% for row in category_rows %}
+        <div class="category-row"><span>{{ row.category }}</span><strong>Rs {{ row.total|floatformat:2 }}</strong></div>
+    {% empty %}
+        <div class="empty">No expenses recorded this month.</div>
+    {% endfor %}
+    </div>
+</section>
+{% endblock %}
