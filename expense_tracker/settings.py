@@ -14,7 +14,7 @@ def env_bool(name, default=False):
 
 
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "").strip()
-DEBUG = env_bool("DJANGO_DEBUG", True)
+DEBUG = env_bool("DJANGO_DEBUG", False)
 
 if not SECRET_KEY:
     if DEBUG:
