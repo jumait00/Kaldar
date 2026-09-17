@@ -132,7 +132,9 @@ EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
 DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "webmaster@localhost")
 
 if not DEBUG:
+    print("Eroor issss hereeeeeeeeeeeeeeeeeedddddddddddddeeeeeeeeeee")
     if not ALLOWED_HOSTS:
+        print("Eroor issss hereeeeeeeeeeeeeeeeeeddddddddddddddddddddddddddddddddddddddddddddeeeeeeeeeee")
         raise ImproperlyConfigured(
             "DJANGO_ALLOWED_HOSTS must contain your PythonAnywhere domain when DEBUG=False."
         )
