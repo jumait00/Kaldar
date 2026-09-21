@@ -23,7 +23,8 @@ if not SECRET_KEY:
         raise ImproperlyConfigured("DJANGO_SECRET_KEY must be set when DJANGO_DEBUG=False.")
 
 configured_hosts = os.getenv("DJANGO_ALLOWED_HOSTS", "").strip()
-ALLOWED_HOSTS = [host.strip() for host in configured_hosts.split(",") if host.strip()]
+# ALLOWED_HOSTS = [host.strip() for host in configured_hosts.split(",") if host.strip()]
+ALLOWED_HOSTS = ["kaldar.pythonanywhere.com"]
 
 pythonanywhere_domain = os.getenv("PYTHONANYWHERE_DOMAIN", "").strip()
 if pythonanywhere_domain:
@@ -33,7 +34,7 @@ if pythonanywhere_domain:
 
 if DEBUG and not ALLOWED_HOSTS:
     # ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
-    ALLOWED_HOSTS = ["Kaldar.pythonanywhere.com"]
+    ALLOWED_HOSTS = ["kaldar.pythonanywhere.com"]
 
 csrf_origins = os.getenv("CSRF_TRUSTED_ORIGINS", "").strip()
 CSRF_TRUSTED_ORIGINS = [origin.strip().rstrip("/") for origin in csrf_origins.split(",") if origin.strip()]
