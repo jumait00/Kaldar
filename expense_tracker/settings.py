@@ -37,7 +37,10 @@ if DEBUG and not ALLOWED_HOSTS:
     ALLOWED_HOSTS = ["kaldar.pythonanywhere.com"]
 
 csrf_origins = os.getenv("CSRF_TRUSTED_ORIGINS", "").strip()
-CSRF_TRUSTED_ORIGINS = [origin.strip().rstrip("/") for origin in csrf_origins.split(",") if origin.strip()]
+# CSRF_TRUSTED_ORIGINS = [origin.strip().rstrip("/") for origin in csrf_origins.split(",") if origin.strip()]
+CSRF_TRUSTED_ORIGINS = [
+    'https://kaldar.pythonanywhere.com',
+]
 if pythonanywhere_domain:
     origin = f"https://{pythonanywhere_domain}"
     if origin not in CSRF_TRUSTED_ORIGINS:
